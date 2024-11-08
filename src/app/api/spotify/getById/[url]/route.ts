@@ -1,24 +1,15 @@
 import { NextApiRequest } from 'next';
 import { getAccessToken } from '../../getAccessToken';
-
-interface Track {
-    album: {
-        artists: { name: string }[];
-        name: string;
-        external_urls: { spotify: string };
-        images: { width: number; height: number; url: string }[];
-    };
-    external_ids?: { isrc: string };
-}
+import { Result, SpotifyTrack } from 'types';
 
 export async function GET(_: NextApiRequest, { params }: { params: { url: string } }) {
     try {
         const accessToken = await getAccessToken();
         const { url } = await params;
 
-        const track: Track = await getIRSCFromSpotifyId({ accessToken, spotifyId: url });
+        const track: SpotifyTrack = await getIRSCFromSpotifyId({ accessToken, spotifyId: url });
 
-        const data = {
+        const data: Result = {
             artist: track.album.artists,
             artistName: track.album.artists.reduce((acc, curr, _, arr) => {
                 if (arr.length === 1) {

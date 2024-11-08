@@ -1,15 +1,6 @@
 import { NextApiRequest } from 'next';
 import { getAccessToken } from '../../getAccessToken';
-
-interface Track {
-    album: {
-        artists: { name: string }[];
-        name: string;
-        external_urls: { spotify: string };
-        images: { width: number; height: number; url: string }[];
-    };
-    external_ids?: { isrc: string };
-}
+import { Result, SpotifyTrack } from 'types';
 
 export async function GET(_: NextApiRequest, { params }: { params: { q: string } }) {
     try {
@@ -17,7 +8,7 @@ export async function GET(_: NextApiRequest, { params }: { params: { q: string }
         const { q } = await params;
         const searchResult = await searchByQuery({ accessToken, query: q });
 
-        const data = searchResult.tracks.items.map((track: Track) => ({
+        const data: Result[] = searchResult.tracks.items.map((track: SpotifyTrack) => ({
             artist: track.album.artists,
             artistName: track.album.artists.reduce((acc, curr, _, arr) => {
                 if (arr.length === 1) {

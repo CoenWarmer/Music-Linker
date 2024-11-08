@@ -8,7 +8,7 @@ import { Results } from 'src/components/Results';
 import { Result } from 'types';
 
 export default function Page() {
-    const [url, setUrl] = useState<string>('https://open.spotify.com/track/0mckqlVJEcHHFk7EQUKAWa?si=59c27093f7e54438');
+    const [url, setUrl] = useState<string>('');
     const [results, setResults] = useState<Result[]>([]);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
